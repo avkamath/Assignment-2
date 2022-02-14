@@ -192,13 +192,13 @@ namespace ISM6225_Assignment_2_Spring_2022
                 
                 
 
-                Console.WriteLine(small);
+                //Console.WriteLine(small);
                 words = small.Split(' '); //convert string into an array
                 Dictionary<String, int> dictionary = new Dictionary<string, int>(); 
 
                 foreach (string word in words) // loop over the words
                 {
-                    if(!banned.Contains(word))
+                    if(!banned.Contains(word))//if word is not in the array of banned words
                     {
                         if (dictionary.ContainsKey(word)) //if it's in the dictionary
                             dictionary[word] = dictionary[word] + 1; //Increment the count

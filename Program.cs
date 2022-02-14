@@ -119,46 +119,39 @@ namespace ISM6225_Assignment_2_Spring_2022
         Output: 4
         */
 
-        public static int SearchInsert(int[] nums, int target)
+     
+     //self reflection: learning to implement search algorithm and compute complexity
+              public static int SearchInsert(int[] nums, int target)
         {
             try
             {
                 //Write your Code here.
-                int min = 0, max = nums.Length - 1;
-                int i = 0;
-                if(Array.Exists(nums,x=> x==target))
+                int low = 0;
+                int high = nums.Length - 1; 
+                int mid;
+                int pos=0;
+                while (low <= high)
                 {
-                    while (min <= max)
-                    {
-                        int mid = (min + max) / 2;
-                        if (target == nums[mid])
-                        {
-                            return mid++;
-                        }
-                        else if (target <= nums[mid])
-                        {
-                            max = mid - 1;
-                        }
-                        else
-                        {
-                            min = mid + 1;
-                        }
-                    }
+                    mid = low + (high - low) / 2; //compute mid
 
-                }
-                else if(target>nums.Last())
-                {
-                    return nums.Length;
-                }
-                else
-                {
-                    while(target>nums[i])
+                    if (nums[mid] == target) //if target is at the mid return mid
                     {
-                        i++;
+                        return mid;
                     }
-                    return i;
+                    else if (nums[mid] > target) //if target>mid, check in the first half. 
+                    {
+                        high = mid - 1;
+                        pos = mid;
+                    }
+                    else //else check for target in the second half
+                    {
+                        low = mid + 1;
+                        pos = mid + 1; //if target is higher than the mid, position of the target will always be greater than the number below it. the process will go on until low is less than high.
+                    }
                 }
-                return -1;
+
+                return pos;
+            
             }
             catch (Exception)
             {
@@ -182,6 +175,8 @@ namespace ISM6225_Assignment_2_Spring_2022
          //Output: "a"
          //*/
 
+     
+     //self reflection: learning to work with dictionaries and regex
         public static string MostCommonWord(string paragraph, string[] banned)
         {
             try
@@ -189,30 +184,31 @@ namespace ISM6225_Assignment_2_Spring_2022
 
                 //write your code here.
 
-                string small = paragraph.ToLower();
+                string small = paragraph.ToLower(); //convert string to lowercase
                 string[] words = new string[paragraph.Length];
                 Regex reg = new Regex("[*'\".,_&#^@]");
-                small = reg.Replace(small, "");
+                small = reg.Replace(small, ""); //replace all special characters with null character
                 
                 
 
                 Console.WriteLine(small);
-                words = small.Split(' ');
-                Dictionary<String, int> dictionary = new Dictionary<string, int>();
+                words = small.Split(' '); //convert string into an array
+                Dictionary<String, int> dictionary = new Dictionary<string, int>(); 
 
-                foreach (string word in words) //let's loop over the words
+                foreach (string word in words) // loop over the words
                 {
                     if(!banned.Contains(word))
                     {
                         if (dictionary.ContainsKey(word)) //if it's in the dictionary
                             dictionary[word] = dictionary[word] + 1; //Increment the count
                         else
-                            dictionary[word] = 1; //put it in the dictionary with a count 1
+                            dictionary[word] = 1; //if its not, put it in the dictionary with a count 1
                     }
                       
                  
                 }
-                //Console.WriteLine(dictionary.Max());
+                //Console.WriteLine(dictionary.Max()); //iterate over the dictionary and compare value(count) of each word against the maxcount
+             //every time a highest count is found, its assigned to max count
                 int maxcount = 0;
 
                 foreach(string word in dictionary.Keys)
@@ -225,10 +221,7 @@ namespace ISM6225_Assignment_2_Spring_2022
                     }
                 }
 
-
-                
-
-                return dictionary.FirstOrDefault(x => x.Value == maxcount).Key;
+                return dictionary.FirstOrDefault(x => x.Value == maxcount).Key; //returns the key of the highest count value
             }
             catch (Exception)
             {
@@ -256,29 +249,33 @@ namespace ISM6225_Assignment_2_Spring_2022
         //Explanation: There are no lucky numbers in the array.
         // */
 
+     
+     //self reflection: understnading arrays
         public static int FindLucky(int[] arr)
         {
             try
             {
+             
+             //sort the array
                 Array.Sort(arr);
-                int res = 0;
-#pragma warning disable CS0162 // Unreachable code detected
-                for (int i = arr.Length - 1; i >= 0; i--)
+                int res = 0; //count
+#pragma warning disable CS0162 // Unreachable code detected //warnings given in visual studio
+                for (int i = arr.Length - 1; i >= 0; i--)  
 #pragma warning restore CS0162 // Unreachable code detected
                 {
                     res++;
-                    if (i == 0 || arr[i] != arr[i - 1])
+                    if (i == 0 || arr[i] != arr[i - 1]) //check that i does not have similar value at i-1 position
                     {
-                        if (res == arr[i])
+                        if (res == arr[i]) //check if count is equal to i
                         {
-                            return res;
+                            return res; //return the lucky number (count)
                         }
                         res = 0;
                     }
 
                     
                 }
-                return -1;
+                return -1; //if lucky number is not present
             }
             catch (Exception)
             {
@@ -308,24 +305,24 @@ namespace ISM6225_Assignment_2_Spring_2022
         //*/
 
 
-
+       //self reflection: learning on string comparison
         public static string GetHint(string secret, string guess)
         {
             try
             {
-                char[] sec = secret.ToArray();
+                char[] sec = secret.ToArray(); //convert both strings to char array
                 char[] gs = guess.ToArray();
                 int i=sec.Length-1;
                 int count = 0;
                 int count2 = 0;
                 while(i>=0)
                 {
-                    if(sec[i]==gs[i])
+                    if(sec[i]==gs[i]) //compare characters of secret and guess at ith position
                     {
-                        i--;
-                        count++;
+                        i--; //decrement i
+                        count++; //increase count if they are same
                     }
-                    else if(gs.Contains(sec[i]))
+                    else if(gs.Contains(sec[i])) //if guess contains the ith value in char array, increment count2
                     {
                         i--;
                         count2++;
@@ -360,6 +357,8 @@ namespace ISM6225_Assignment_2_Spring_2022
         //A partition like "ababcbacadefegde", "hijhklij" is incorrect, because it splits s into less parts.
         //*/
 
+     
+     //learning the functioning of hash sets
         public static List<int> PartitionLabels(string s)
         {
             try
@@ -369,19 +368,19 @@ namespace ISM6225_Assignment_2_Spring_2022
                 {
                     return arrayList;
                 }
-                char[] arr = s.ToCharArray();
+                char[] arr = s.ToCharArray(); //convert to char array
                 HashSet<Char> seen = new HashSet<Char>();
                 int[] right = new int[26];
                 foreach (char c in arr)
                 {
-                    right[c - 'a']++;
+                    right[c - 'a']++; //get the position of the character
                 }
                 int count = 0;
 
                 foreach (char c in arr)
                 {
                     count++;
-                    seen.Add(c);
+                    seen.Add(c); //add seen elements to hashset
                     if (--right[c - 'a'] == 0)
                     {
                         seen.Remove(c);
@@ -427,6 +426,7 @@ namespace ISM6225_Assignment_2_Spring_2022
         //              There are a total of 2 lines, and the last line is 4 pixels wide.
         // */
 
+     //learning to work with lists and its functions
         public static List<int> NumberOfLines(int[] widths, string s)
         {
             try
@@ -437,19 +437,19 @@ namespace ISM6225_Assignment_2_Spring_2022
                 int lines = 1, width = 0;
                 foreach (char character in s.ToCharArray())
                 {
-                    int w = widths[character - 'a'];
-                    if(w+width>100)
+                    int w = widths[character - 'a']; //get array value for each character
+                    if(w+width>100) //if total width of the characters exceed 100, increment the count of lines
                     {
                         lines++;
-                        width = 0;
+                        width = 0; //for a new line, set the width to 0 again
                     }
-                    width += w;
+                    width += w; //add characters to the same line
                 }
-                res.Add(lines);
+                res.Add(lines); //create a list to return
                 res.Add(width);
 
 
-                return res;
+                return res;//return a list of lines and width of each line
             }
             catch (Exception)
             {
@@ -478,6 +478,8 @@ namespace ISM6225_Assignment_2_Spring_2022
         //Output: false
         //*/
 
+     //Understnding the working of stacks and its functions
+     //An intro about data types like this (methods and implementation) in class will be helpful.
         public static bool IsValid(string bulls_string10)
         {
             try
@@ -485,22 +487,22 @@ namespace ISM6225_Assignment_2_Spring_2022
                 //write your code here.
                 Boolean flag = true;
 
-                Stack myStack = new Stack();
+                Stack myStack = new Stack(); //Declare a stack
 
-                for (int i = 0; i < bulls_string10.Length; i++)
+                for (int i = 0; i < bulls_string10.Length; i++) //check if i is equal to one of the paranthesis types
                 {
 
-                    if (bulls_string10[i].ToString() == "{"
+                    if (bulls_string10[i].ToString() == "{" 
                        || bulls_string10[i].ToString() == "("
                        || bulls_string10[i].ToString() == "[")
                     {
 
-                        myStack.Push(bulls_string10[i].ToString());
+                        myStack.Push(bulls_string10[i].ToString()); //if they are equal, push the items to the stack
                     }
-                    else if (myStack.Count > 0)
+                    else if (myStack.Count > 0) //when there are elements in the stack
                     {
 
-                        if (bulls_string10[i].ToString() == "}")
+                        if (bulls_string10[i].ToString() == "}") //when the open paranthesis has a matching closed paranthesis, pop it from the stack
                         {
 
                             if (myStack.Peek().ToString() == "{")
@@ -509,10 +511,10 @@ namespace ISM6225_Assignment_2_Spring_2022
                             }
                             else
                             {
-                                flag = false;
+                                flag = false; //if there is no matching paranthesis, set flag to false
                             }
                         }
-                        else if (bulls_string10[i].ToString() == "]")
+                        else if (bulls_string10[i].ToString() == "]") //repeat the process for all kinds of paranthesis
                         {
 
                             if (myStack.Peek().ToString() == "[")
@@ -541,7 +543,7 @@ namespace ISM6225_Assignment_2_Spring_2022
                     else
                     {
                         //Console.WriteLine(count + " " + s[i].ToString());
-                        flag = false;
+                        flag = false; //there are any other elements in the tsring, set flag to not valid
                     }
                 }
 
@@ -552,7 +554,7 @@ namespace ISM6225_Assignment_2_Spring_2022
 
 
 
-                return flag;
+                return flag; //if all the conditions meet, flag will return true which was initially set
             }
             catch (Exception)
             {
@@ -587,6 +589,7 @@ namespace ISM6225_Assignment_2_Spring_2022
         //There are 2 different transformations: "--...-." and "--...--.".
         //*/
 
+     //self reflection: learning to work with dictionaries and strings a little more
         public static int UniqueMorseRepresentations(string[] words)
         {
             try
